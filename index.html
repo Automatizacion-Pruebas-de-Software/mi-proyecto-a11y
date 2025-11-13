@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Prueba Axe CLI</title>
+  <style>
+    .bad-contrast { color: #888; background: white; } /* contraste 2.1:1 */
+    button { outline: none; } /* foco invisible */
+  </style>
+</head>
+<body>
+  <h1>Bienvenido</h1>
+  
+  <!-- ERROR 1: imagen sin alt -->
+  <img src="logo.png" width="100">
+
+  <!-- ERROR 2: contraste bajo -->
+  <p class="bad-contrast">Texto con contraste insuficiente</p>
+
+  <!-- ERROR 3: botón sin texto visible ni aria-label -->
+  <button onclick="alert('click')">
+    <span aria-hidden="true">Click</span>
+  </button>
+
+  <!-- ERROR 4: enlace sin texto descriptivo -->
+  <a href="#">Leer más</a>
+</body>
+</html>
