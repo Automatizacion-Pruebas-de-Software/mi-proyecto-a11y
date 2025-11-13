@@ -9,7 +9,7 @@
     "preview": "vite preview --port 5173",
     "serve": "serve dist -l 5173 --no-port-switching",
     "test:a11y": "axe",
-    "test:a11y:dev": "npm run build && npm run serve & SERVER_PID=$! && npx wait-on http://localhost:5173 --timeout 60000 && npx --no-install axe && kill $SERVER_PID || kill $SERVER_PID"
+    "test:a11y:dev": "npm run build && npm run serve & SERVER_PID=$! && npx wait-on http://localhost:5173 --timeout 60000 && npx axe http://localhost:5173 && kill $SERVER_PID || kill $SERVER_PID"
   },
   "devDependencies": {
     "@axe-core/cli": "^4.11.0",
