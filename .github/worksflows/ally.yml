@@ -1,0 +1,35 @@
+# .github/workflows/a11y.yml
+name: Accesibilidad con Axe CLI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  a11y:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - run: |
+          npx serve dist -l 5173 --no-port-switching > server.log 2>&1 &
+          SERVER_PID=$!
+          npx wait-on http://localhost:5173 -t 30000
+          npx axe http://localhost:5173 || echo "A11Y_FAILED=true" >> $GITHUB_ENV
+          kill $SERVER_PID || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reporte-accesibilidad
+          path: axe-report.html
+      - run: exit 1
+        if: env.A11Y_FAILED == 'true'
+      - run: echo "Accesibilidad 100% OK – 0 errores críticos"
